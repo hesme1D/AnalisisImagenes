@@ -26,8 +26,8 @@ public class ContrasteListener implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         int u1 = this.frame.getSliderU1().getValue();
         int u2 = this.frame.getSliderU2().getValue();
-        Image res = FiltrosEspaciales.contraste(this.frame.getImagenContrastada(),u1,u2);
-        this.frame.getLabelImagen().setIcon(new ImageIcon(res));
+        //Image res = FiltrosEspaciales.contraste(this.frame.getImagenContrastada(),u1,u2);
+        //this.frame.getLabelImagen().setIcon(new ImageIcon(res));
     }
     
 }

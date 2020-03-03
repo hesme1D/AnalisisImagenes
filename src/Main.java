@@ -18,10 +18,46 @@ public class Main {
     public static void main(String[] args) {
 
         Image imagen = AbrirImagen.openImage();
+        //Expansión lineal
+        Histogramas h = new Histogramas(imagen);
+        h.graficarHistogramas();
+        JframeImagen fi = new JframeImagen(imagen);
+        //Image contraste = FiltrosEspaciales.contraste(h, imagen);
+        //JframeImagen fic = new JframeImagen(contraste);
+        //Histogramas h1 = new Histogramas(contraste);
+        //h1.graficarHistogramas();
+        //Expansión Exponencial
+        //Image exp = FiltrosEspaciales.Exponencial(imagen, 100);
+        //JframeImagen frame = new JframeImagen(exp);
+        //Histogramas h2 = new Histogramas(exp);
+        //h2.graficarHistogramas();
+        //Expansión Logaritmica
+        Image log = FiltrosEspaciales.Logaritmica(imagen);
+        JframeImagen frame2 = new JframeImagen(log);
+        Histogramas h3 = new Histogramas(log);
+        h3.graficarHistogramas();
         
+        //Formula Propia
+        //Image p = FiltrosEspaciales.Propia(imagen);
+        //JframeImagen frame4 = new JframeImagen(p);
+        //Histogramas h4 = new Histogramas(p);
+        //h4.graficarHistogramas();
+        
+        //Binarización
+        //Histogramas h = new Histogramas(imagen);
+        //h.graficarHistogramas();
+        //JframeImagen frame = new JframeImagen(imagen);
+        //Image Bin = FiltrosEspaciales.Binarizar(imagen, 50);
+        //JFrame frameB = new JframeImagen(Bin);
+        //Histogramas h2 = new Histogramas(Bin);
+        //h2.graficarHistogramas();
+        
+    
+
+
         //JFrameContraste frame = new JFrameContraste("Contraste", imagen);
         
-        JFrameIluminacion frame = new JFrameIluminacion("Iluminacion", imagen);
+        //JFrameIluminacion frame = new JFrameIluminacion("Iluminacion", imagen);
         //JFrameSegmentacion frame = new JFrameSegmentacion("Segmentacion",imagen);
         //Grises
         //Image imagenGrises = FiltrosEspaciales.generarImagenGirs(imagen);
@@ -45,12 +81,12 @@ public class Main {
         //Image imagenC = FiltrosEspaciales.contraste(imagen, 14);
         //JframeImagen frame4 = new JframeImagen(imagenC);
         //Histograma, imagen original
-        Histogramas hi = new Histogramas(imagen);
+        //Histogramas hi = new Histogramas(imagen);
         //hi.graficarHistogramaGrises();
         //hi.graficarHistogramaAzul();
         //hi.graficarHistogramaRojo();
         //hi.graficarHistogramaVerde();
-        hi.graficarHistogramas();
+        //hi.graficarHistogramas();
         
         //Histogramas hi2 = new Histogramas(imagenIl);
         //hi2.graficarHistogramas();
