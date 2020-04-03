@@ -3,6 +3,7 @@ package analisisespacial;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import org.jfree.chart.plot.XYPlot;
 
 import open.AbrirImagen;
 
@@ -45,33 +46,48 @@ public class Histogramas{
         aux.agregarSerie("Rojos",this.hRojo);
         aux.agregarSerie("Azules",this.hAzul);
         aux.agregarSerie("Verdes",this.hVerde);
-        aux.crearYmostrarGrafica();
-               
+        
+        aux.crearGrafica();
+        
+        XYPlot plot = aux.getGrafica().getXYPlot();
+        plot.getRenderer().setSeriesPaint(0, new Color(Color.RED.getRGB()));
+        plot.getRenderer().setSeriesPaint(1, new Color(Color.BLUE.getRGB()));
+        plot.getRenderer().setSeriesPaint(2, new Color(Color.GREEN.getRGB()));
+        
+        aux.MostrarGrafica();
     } 
     public void graficarHistogramaRojo(){
         Grafica aux = new Grafica("Tono","Intesidad","Frecuencias");
         aux.agregarSerie("Rojos",this.hRojo);
-        aux.crearYmostrarGrafica();
-        
+        aux.crearGrafica();
+        XYPlot plot = aux.getGrafica().getXYPlot();
+        plot.getRenderer().setSeriesPaint(0, new Color(Color.RED.getRGB()));
+        aux.MostrarGrafica();
     } 
     public void graficarHistogramaVerde(){
         Grafica aux = new Grafica("Tono","Intesidad","Frecuencias");
         aux.agregarSerie("Verdes",this.hVerde);
-        aux.crearYmostrarGrafica();
-        
+        aux.crearGrafica();
+        XYPlot plot = aux.getGrafica().getXYPlot();
+        plot.getRenderer().setSeriesPaint(0, new Color(Color.GREEN.getRGB()));
+        aux.MostrarGrafica();
     } 
     public void graficarHistogramaAzul(){
         Grafica aux = new Grafica("Tono","Intesidad","Frecuencias");
         aux.agregarSerie("Azules",this.hAzul);
-        aux.crearYmostrarGrafica();
-        
+        aux.crearGrafica();
+        XYPlot plot = aux.getGrafica().getXYPlot();
+        plot.getRenderer().setSeriesPaint(0, new Color(Color.BLUE.getRGB()));
+        aux.MostrarGrafica();
     } 
 
     public void graficarHistogramaGrises(){
         Grafica aux = new Grafica("Tono","Intesidad","Frecuencias");
         aux.agregarSerie("Grises",this.hGrises);
-        aux.crearYmostrarGrafica();
-        
+        aux.crearGrafica();
+        XYPlot plot = aux.getGrafica().getXYPlot();
+        plot.getRenderer().setSeriesPaint(0, new Color(Color.DARK_GRAY.getRGB()));
+        aux.MostrarGrafica();
     }
     
     private void calcularMinimosYMaximos(){

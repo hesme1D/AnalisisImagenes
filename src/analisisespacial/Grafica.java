@@ -40,9 +40,15 @@ public class Grafica{
      
     }
     
-    public void crearYmostrarGrafica(){
+    public JFreeChart getGrafica(){
+        return this.grafica;
+    }
     
+    public void crearGrafica(){
         this.grafica = ChartFactory.createXYAreaChart(titulo, ejeX, ejeY, series);
+    }
+    
+    public void MostrarGrafica(){
         ChartFrame frame = new ChartFrame("Histograma de color", grafica);
         frame.setVisible(true);
         frame.setSize(500,370);

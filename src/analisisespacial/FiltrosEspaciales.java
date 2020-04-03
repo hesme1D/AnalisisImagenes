@@ -248,13 +248,87 @@ public class FiltrosEspaciales {
         for(int x=0; x<bi.getWidth();x++){
             for(int y=0; y<bi.getHeight();y++){
                 color = new Color(bi.getRGB(x, y));
-                int r = (int)(color.getRed()*255/10);
-                int g = (int)(color.getGreen()*255/10);
-                int b = (int)(color.getBlue()*255/10);
+                int r = (int)(color.getRed()*25/100);
+                int g = (int)(color.getGreen()*25/100);
+                int b = (int)(color.getBlue()*25/100);
                 color = new Color(r,g,b);
                 bi.setRGB(x, y, color.getRGB());
             }
         }
         return AbrirImagen.toBufferedImage(bi);
+    }
+    
+    //Ecualizar
+    public static Image Ecualizar(Image imagen){
+        
+        int nxm = imagen.getWidth(null)*imagen.getHeight(null);
+        Histogramas h = new Histogramas(imagen);
+        double[] ho = h.getHRed();
+        double[] daf = new double[256];
+        int[] nt = new int[256];
+        daf[0] = (int)ho[0];
+        nt[0] = (int)Math.round((daf[0]/nxm)*255);
+        //Recorremos el histograma para acumular
+        for(int x=1; x<ho.length;x++){
+            daf[x] = (int)(ho[x]+daf[x-1]);
+            double aux = daf[x]/nxm;
+            int tmp = (int) Math.round(aux * 255);
+            nt[x] = tmp;
+        }
+        BufferedImage bi = AbrirImagen.toBufferedImage(imagen);
+        Color color;
+        for(int x=0; x<bi.getWidth();x++){
+            for(int y=0; y<bi.getHeight();y++){
+                color = new Color(bi.getRGB(x, y));
+                int t = color.getRed();
+                int t2 = nt[t];
+                color = new Color(t2,t2,t2);
+                bi.setRGB(x, y, color.getRGB());
+            }
+        }
+        return AbrirImagen.toImage(bi);
+    }
+    
+    //Iterativo.
+    public static int metodoIterativo(double[] histograma){
+        int ui = calcularUmbralInicial(histograma);
+        int uNuevo=0;
+        System.out.println(ui);
+        do{
+        uNuevo = ui;
+        ui = reajustarUmbral(ui,histograma);
+        System.out.println(ui);
+        }while(uNuevo!=ui);
+        
+        return ui;
+    }
+    
+    private static int calcularUmbralInicial(double[] histograma) {
+        int numPixels = 0;
+        int suma = 0;
+        for(int x=0;x<histograma.length;x++){
+        numPixels+=histograma[x];
+        suma+=histograma[x]*x;
+        }
+        return (int)(suma/numPixels);
+    }
+
+    private static int reajustarUmbral(int ui, double[] histograma) {
+       int u1,u2;
+       int a1=0,a2=0,n1=0,n2=0;
+       a1+=histograma[0];
+       for(int x=1;x<ui;x++){
+        a1+=histograma[x]*x;
+        n1+=histograma[x];
+       }
+       
+        for(int y=ui;y<=255;y++){
+        a2+=histograma[y]*y;
+        n2+=histograma[y];
+       }
+        if (n1==0 || n2==0) return 0;
+        u1 = a1/n1;
+        u2 = a2/n2;
+       return (int)((u1+u2)/2);
     }
 }
