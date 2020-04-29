@@ -73,4 +73,42 @@ public class Convolucion {
         
         return color.getRGB();
     }
+    public static Image Convolucion(Image io, double[][]kernel, double fD){
+        BufferedImage bi = AbrirImagen.toBufferedImage(io);
+        BufferedImage nueva = new BufferedImage(bi.getWidth(),bi.getHeight(),BufferedImage.TYPE_INT_RGB);
+        int n = kernel.length;
+        int t = (int) Math.floor(n / 2);
+        Color color;
+        // recorres la imagen para generar la nueva 
+        for(int i = 0; i<bi.getWidth();i++){
+            for(int j =0; j<bi.getHeight(); j++){
+                double auxR=0, auxG=0, auxB=0 ;
+                for(int x=0; x<n; x++){
+                    for(int y =0; y<n; y++){
+                    try{
+                        color = new Color(bi.getRGB(x - t +i, y -t +j));
+                        auxR += kernel[x][y] * color.getRed();
+                        auxG += kernel[x][y] * color.getGreen();
+                        auxB += kernel[x][y] * color.getBlue();
+                                
+                    }catch(Exception e){
+                        
+                    }
+                }
+            }
+            auxR /= fD;
+            auxG /= fD;
+            auxB /= fD;
+            
+             color = new Color(validarLimites((int) auxR),validarLimites((int) auxG),validarLimites((int) auxB));
+             nueva.setRGB(i, j, color.getRGB());
+            }
+        }
+        return AbrirImagen.toImage(nueva);
+    }
+    public static int validarValor(int valor){
+      if(valor<0) return 0;
+      if(valor>255) return 255;
+      return valor;
+    }
 }

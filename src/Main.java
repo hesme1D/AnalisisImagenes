@@ -1,26 +1,19 @@
-import analisisespacial.Convolucion;
 import open.AbrirImagen;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-import analisisespacial.FiltrosEspaciales;
 import analisisespacial.Histogramas;
-import analisisespacial.Suavizado;
-import gui.JFrameContraste;
-import gui.JFrameIluminacion;
-import gui.JFrameSegmentacion;
+import analisisfrecuencias.Gestor;
 import gui.JframeImagen;
+import java.awt.image.BufferedImage;
 
 public class Main {
 
     public static void main(String[] args) {
 
         Image imagen = AbrirImagen.openImage();
-        JframeImagen io = new JframeImagen(imagen);
+        JframeImagen frame = new JframeImagen(imagen);
+        Gestor gestor = new Gestor(AbrirImagen.toBufferedImage(imagen));
+        BufferedImage bf = gestor.obtenerImagenFrecuencias(true);
+        JframeImagen frame2 = new JframeImagen(AbrirImagen.toImage(bf));
         Histogramas h1 = new Histogramas(imagen);
         h1.graficarHistogramas();
         
@@ -47,41 +40,76 @@ public class Main {
         //his.graficarHistogramas();
         
         //Máscara para el enfoque
-        int[][] mascaraEnfoque = new int[][]{{0,0,0,0,0},{0,0,-1,0,0},{0,-1,5,-1,0},{0,0,-1,0,0},{0,0,0,0,0}};
-        Image ConvEnfoque = Convolucion.AplicarConvolucion(imagen, mascaraEnfoque, 1, 0);
-        JframeImagen icE = new JframeImagen(ConvEnfoque);
-        Histogramas hce = new Histogramas(ConvEnfoque);
-        hce.graficarHistogramas();
+        //int[][] mascaraEnfoque = new int[][]{{0,0,0,0,0},{0,0,-1,0,0},{0,-1,5,-1,0},{0,0,-1,0,0},{0,0,0,0,0}};
+        //Image ConvEnfoque = Convolucion.AplicarConvolucion(imagen, mascaraEnfoque, 1, 0);
+        //JframeImagen icE = new JframeImagen(ConvEnfoque);
+        //Histogramas hce = new Histogramas(ConvEnfoque);
+        //hce.graficarHistogramas();
         
         //Mascara de desenfoque
-        int[][] mascaraDes = new int[][]{{1,1,1},{1,1,1},{1,1,1}};
+        //int[][] mascaraDes = new int[][]{{1,1,1},{1,1,1},{1,1,1}};
         //int[][] mascaraDes = new int[][]{{0,0,0,0,0},{0,1,1,1,0},{0,1,1,1,0},{0,1,1,1,0},{0,0,0,0,0}};
-        Image ConvDes = Convolucion.AplicarConvolucion(imagen, mascaraDes, 9, 0);
-        JframeImagen icD = new JframeImagen(ConvDes);
-        Histogramas hcd = new Histogramas(ConvDes);
-        hcd.graficarHistogramas();
+        //Image ConvDes = Convolucion.AplicarConvolucion(imagen, mascaraDes, 9, 0);
+        //JframeImagen icD = new JframeImagen(ConvDes);
+        //Histogramas hcd = new Histogramas(ConvDes);
+        //hcd.graficarHistogramas();
         
         //Mascara realzar bordes
-        int[][] mascaraRealce = new int[][]{{0,0,0},{-1,1,0},{0,0,0}};
-        Image ConvRes = Convolucion.AplicarConvolucion(imagen, mascaraRealce, 1, 0);
-        JframeImagen icR = new JframeImagen(ConvRes);
-        Histogramas hcr = new Histogramas(ConvRes);
-        hcr.graficarHistogramas();
+        //int[][] mascaraRealce = new int[][]{{0,0,0},{-1,1,0},{0,0,0}};
+        //Image ConvRes = Convolucion.AplicarConvolucion(imagen, mascaraRealce, 1, 0);
+        //JframeImagen icR = new JframeImagen(ConvRes);
+        //Histogramas hcr = new Histogramas(ConvRes);
+        //hcr.graficarHistogramas();
         
         //Mascara detectar bordes
-        int[][] mascaraBordes = new int[][]{{0,1,0},{1,-4,1},{0,1,0}};
-        Image ConvBorde = Convolucion.AplicarConvolucion(imagen, mascaraBordes, 1, 0);
-        JframeImagen icB = new JframeImagen(ConvBorde);
-        Histogramas hcb = new Histogramas(ConvBorde);
-        hcb.graficarHistogramas();
+        //int[][] mascaraBordes = new int[][]{{0,1,0},{1,-4,1},{0,1,0}};
+        //Image ConvBorde = Convolucion.AplicarConvolucion(imagen, mascaraBordes, 1, 0);
+        //JframeImagen icB = new JframeImagen(ConvBorde);
+        //Histogramas hcb = new Histogramas(ConvBorde);
+        //hcb.graficarHistogramas();
         
         //Mascara Repujado
-        int[][] mascaraRep = new int[][]{{-2,-1,0},{-1,1,1},{0,1,2}};
-        Image ConvRep = Convolucion.AplicarConvolucion(imagen, mascaraRep, 1, 0);
-        JframeImagen icRep = new JframeImagen(ConvRep);
-        Histogramas hcre = new Histogramas(ConvRep);
-        hcre.graficarHistogramas();
- 
+        //int[][] mascaraRep = new int[][]{{-2,-1,0},{-1,1,1},{0,1,2}};
+        //Image ConvRep = Convolucion.AplicarConvolucion(imagen, mascaraRep, 1, 0);
+        //JframeImagen icRep = new JframeImagen(ConvRep);
+        //Histogramas hcre = new Histogramas(ConvRep);
+        //hcre.graficarHistogramas();
+        
+        //Sobel
+        //Image gris = FiltrosEspaciales.generarImagenGirs(imagen);
+        //JframeImagen igris = new JframeImagen(gris);
+        //Histogramas h2 = new Histogramas(gris);
+        //h2.graficarHistogramaGrises();
+        //double[][] mascaraSobelx = new double[][]{{-1,0,1},{-2,0,2},{-1,0,1}};
+        //double[][] mascaraSobely = new double[][]{{-1,-2,-1},{0,0,0},{1,2,1}};
+        //Image ConvSobel = Convolucion.Convolucion(gris, mascaraSobelx, 1);
+        //JframeImagen icSobel = new JframeImagen(ConvSobel);
+        //Histogramas hcS = new Histogramas(ConvSobel);
+        //hcS.graficarHistogramas();
+        
+        //Prewitt
+        //Image gris2 = FiltrosEspaciales.generarImagenGirs(imagen);
+        //JframeImagen igris2 = new JframeImagen(gris2);
+        //Histogramas h3 = new Histogramas(gris2);
+        //h3.graficarHistogramaGrises();
+        //double[][] mascaraPrewittx = new double[][]{{-1,0,1},{-1,0,1},{-1,0,1}};
+        //double[][] mascaraPrewitty = new double[][]{{1,1,1},{0,0,0},{-1,-1,-1}};
+        //Image ConvPrewitt = Convolucion.Convolucion(gris2, mascaraPrewitty, 1);
+        //JframeImagen icPrewitt = new JframeImagen(ConvPrewitt);
+        //Histogramas hcP = new Histogramas(ConvPrewitt);
+        //hcP.graficarHistogramas();
+        
+        //Roberts
+        //Image gris3 = FiltrosEspaciales.generarImagenGirs(imagen);
+        //JframeImagen igris3 = new JframeImagen(gris3);
+        //Histogramas h3 = new Histogramas(gris3);
+        //h3.graficarHistogramaGrises();
+        //double[][] mascaraRobertsx = new double[][]{{-1,0,0},{0,1,0},{0,0,0}};
+        //double[][] mascaraRobertsy = new double[][]{{0,0,-1},{0,1,0},{0,0,0}};
+        //Image ConvRoberts = Convolucion.Convolucion(gris3, mascaraRobertsy, 1);
+        //JframeImagen icRoberts = new JframeImagen(ConvRoberts);
+        //Histogramas hcR = new Histogramas(ConvRoberts);
+        //hcR.graficarHistogramas();
         
         //Generar imagen en grises
         //Image gris = FiltrosEspaciales.generarImagenGirs(imagen);
