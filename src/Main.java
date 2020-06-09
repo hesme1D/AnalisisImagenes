@@ -1,22 +1,77 @@
+import analisisespacial.FiltrosEspaciales;
+import analisisfrecuencias.FiltroButterworthPasaBajas;
+import analisisfrecuencias.FiltroButterworthPasaAltas;
+//import analisisfrecuencias.FiltroIdealPasaAltas;
+import analisisfrecuencias.FiltroGaussiano;
 import open.AbrirImagen;
 import java.awt.Image;
-import analisisespacial.Histogramas;
 import analisisfrecuencias.Gestor;
 import gui.JframeImagen;
 import java.awt.image.BufferedImage;
+import analisisfrecuencias.FiltroIdealPasaBajas;
+import analisisfrecuencias.NumeroComplejo;
+import java.awt.Dimension;
 
 public class Main {
 
     public static void main(String[] args) {
-
+        
         Image imagen = AbrirImagen.openImage();
-        JframeImagen frame = new JframeImagen(imagen);
-        Gestor gestor = new Gestor(AbrirImagen.toBufferedImage(imagen));
+        Image gris = FiltrosEspaciales.generarImagenGirs(imagen);
+        JframeImagen frame = new JframeImagen(gris);
+        Gestor gestor = new Gestor(AbrirImagen.toBufferedImage(gris));
         BufferedImage bf = gestor.obtenerImagenFrecuencias(true);
         JframeImagen frame2 = new JframeImagen(AbrirImagen.toImage(bf));
-        Histogramas h1 = new Histogramas(imagen);
-        h1.graficarHistogramas();
+        //Creamos el filtro
+        //FILTRO PASA ALTAS
+        //FiltroIdealPasaAltas fipa = new FiltroIdealPasaAltas(10,new Dimension(512,512));
+        //fipa.crearFiltro();
+        //NumeroComplejo[][] filtro = fipa.getFiltroEspacial();
+        //JframeImagen frameFiltro = new JframeImagen(fipa.getImagen());
+        //gestor.aplicarFiltro(filtro);
         
+        //FILTRO PASA BAJAS
+        //FiltroIdealPasaBajas fipb = new FiltroIdealPasaBajas(10,new Dimension(512,512));
+        //fipb.crearFiltro();
+        //NumeroComplejo[][] f2 = fipb.getFiltroEspacial();
+        //JframeImagen frameFiltro2 = new JframeImagen(fipb.getImagen());
+        //gestor.aplicarFiltro(f2);
+        
+        //BufferedImage imEsp = gestor.obtenerImagenEspacial();
+        //JframeImagen frame3 = new JframeImagen(AbrirImagen.toImage(imEsp));
+        //Histogramas h1 = new Histogramas(imagen);
+        //h1.graficarHistogramas();
+        
+        //FILTRO BUTTERWORTH PASA BAJAS
+        //FiltroButterworthPasaBajas fbpb = new FiltroButterworthPasaBajas(new Dimension(512,512),50,50);
+        //fbpb.crearFiltro();
+        //NumeroComplejo[][] f3 = fbpb.getFiltroEspacial();
+        //JframeImagen frameFiltro3 = new JframeImagen(fbpb.getImagen());
+        //gestor.aplicarFiltro(f3);
+        
+        //BufferedImage imEsp2 = gestor.obtenerImagenEspacial();
+        //JframeImagen fr3 = new JframeImagen(AbrirImagen.toImage(imEsp2));
+        
+        //FILTRO BUTTERWORTH PASA ALTAS
+//        FiltroButterworthPasaAltas fbpa = new FiltroButterworthPasaAltas(new Dimension(512,512),100,50);
+//        fbpa.crearFiltro();
+//        NumeroComplejo[][] f4 = fbpa.getFiltroEspacial();
+//        JframeImagen frameFiltro4 = new JframeImagen(fbpa.getImagen());
+//        gestor.aplicarFiltro(f4);
+//        
+//        BufferedImage imEsp3 = gestor.obtenerImagenEspacial();
+//        JframeImagen fr4 = new JframeImagen(AbrirImagen.toImage(imEsp3));
+        
+        //FILTRO GAUSSIANO
+        FiltroGaussiano fg = new FiltroGaussiano(new Dimension(512,512),5,false);
+        fg.crearFiltro();
+        NumeroComplejo[][] f4 = fg.getFiltroEspacial();
+        JframeImagen frameFiltro4 = new JframeImagen(fg.getImagen());
+        gestor.aplicarFiltro(f4);
+        
+        BufferedImage imEsp3 = gestor.obtenerImagenEspacial();
+        JframeImagen fr4 = new JframeImagen(AbrirImagen.toImage(imEsp3));
+
         //Image ruidoA = Suavizado.agregarRuidoAditivo(imagen, 30);
         //JframeImagen ira = new JframeImagen(ruidoA);
         //Histogramas hra = new Histogramas(ruidoA);
