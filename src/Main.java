@@ -9,19 +9,66 @@ import analisisfrecuencias.Gestor;
 import gui.JframeImagen;
 import java.awt.image.BufferedImage;
 import analisisfrecuencias.FiltroIdealPasaBajas;
+import analisisfrecuencias.FiltroSelectivo;
 import analisisfrecuencias.NumeroComplejo;
+import gui.JFrameIm;
 import java.awt.Dimension;
+import static java.lang.Thread.sleep;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException{
         
-        Image imagen = AbrirImagen.openImage();
-        Image gris = FiltrosEspaciales.generarImagenGirs(imagen);
-        JframeImagen frame = new JframeImagen(gris);
-        Gestor gestor = new Gestor(AbrirImagen.toBufferedImage(gris));
-        BufferedImage bf = gestor.obtenerImagenFrecuencias(true);
-        JframeImagen frame2 = new JframeImagen(AbrirImagen.toImage(bf));
+//          //PRUEBAS
+          int[][] puntos;
+          Image io = AbrirImagen.openImage();
+          //Image gris = FiltrosEspaciales.generarImagenGirs(io);
+          int escala = 512;
+          
+          io = AbrirImagen.toBufferedImage(io).getScaledInstance(escala, escala, BufferedImage.TYPE_INT_BGR);
+          JFrameIm frame = new JFrameIm(io);
+          
+          Gestor gest = new Gestor(AbrirImagen.toBufferedImage(io));
+          BufferedImage frec = gest.obtenerImagenFrecuencias(true);
+          Image fre = AbrirImagen.toImage(frec);
+          JFrameIm frame2 = new JFrameIm(fre, true);
+          
+          do{
+              System.err.println("En espera...");
+              sleep(100);
+          }while(frame2.getLista().size()<3);
+          puntos = convertIntegers(frame2.getLista());
+          
+          FiltroSelectivo selec = new FiltroSelectivo(10, new Dimension(escala,escala),puntos); 
+          selec.crearFiltro();
+          NumeroComplejo[][] filtro = selec.getFiltroEspacial();
+          JFrameIm f = new JFrameIm(selec.getImage());
+          gest.aplicarFiltro(filtro);
+          Image fin = AbrirImagen.toImage(gest.obtenerImagenEspacial());
+          JFrameIm fr = new JFrameIm(fin);
+          
+          Image Fq = AbrirImagen.toImage(gest.obtenerImagenFrecuencias(true));
+          JFrameIm idk = new JFrameIm(Fq);
+          
+          Random ran = new Random();
+          int aux = ran.nextInt();
+          
+          AbrirImagen.GuardarImagen(io, "Original"+aux);
+          AbrirImagen.GuardarImagen(fre, "Espectro"+aux);
+          AbrirImagen.GuardarImagen(selec.getImage(), "Filtro"+aux);
+          AbrirImagen.GuardarImagen(fin, "Imagen Filtrada"+aux);
+          AbrirImagen.GuardarImagen(Fq, "Espectro Filtrado"+aux);
+          System.out.println("Listo");
+
+
+//        Image imagen = AbrirImagen.openImage();
+//        Image gris = FiltrosEspaciales.generarImagenGirs(imagen);
+//        JframeImagen frame = new JframeImagen(gris);
+//        Gestor gestor = new Gestor(AbrirImagen.toBufferedImage(gris));
+//        BufferedImage bf = gestor.obtenerImagenFrecuencias(true);
+//        JframeImagen frame2 = new JframeImagen(AbrirImagen.toImage(bf));
         //Creamos el filtro
         //FILTRO PASA ALTAS
         //FiltroIdealPasaAltas fipa = new FiltroIdealPasaAltas(10,new Dimension(512,512));
@@ -63,14 +110,14 @@ public class Main {
 //        JframeImagen fr4 = new JframeImagen(AbrirImagen.toImage(imEsp3));
         
         //FILTRO GAUSSIANO
-        FiltroGaussiano fg = new FiltroGaussiano(new Dimension(512,512),5,false);
-        fg.crearFiltro();
-        NumeroComplejo[][] f4 = fg.getFiltroEspacial();
-        JframeImagen frameFiltro4 = new JframeImagen(fg.getImagen());
-        gestor.aplicarFiltro(f4);
-        
-        BufferedImage imEsp3 = gestor.obtenerImagenEspacial();
-        JframeImagen fr4 = new JframeImagen(AbrirImagen.toImage(imEsp3));
+//        FiltroGaussiano fg = new FiltroGaussiano(new Dimension(512,512),5,false);
+//        fg.crearFiltro();
+//        NumeroComplejo[][] f4 = fg.getFiltroEspacial();
+//        JframeImagen frameFiltro4 = new JframeImagen(fg.getImagen());
+//        gestor.aplicarFiltro(f4);
+//        
+//        BufferedImage imEsp3 = gestor.obtenerImagenEspacial();
+//        JframeImagen fr4 = new JframeImagen(AbrirImagen.toImage(imEsp3));
 
         //Image ruidoA = Suavizado.agregarRuidoAditivo(imagen, 30);
         //JframeImagen ira = new JframeImagen(ruidoA);
@@ -264,5 +311,21 @@ public class Main {
        
         System.out.println();
 
+    }
+
+    private static int[][] convertIntegers(ArrayList<Integer[]> lista) {
+        int[][] ret = new int[lista.size()][lista.get(0).length];
+        for(int i=0; i<ret.length;i++){
+            ret[i] = toPrimitive(lista.get(i));
+        }
+        return ret;
+    }
+
+    private static int[] toPrimitive(Integer[] get) {
+        int[] result = new int[get.length];
+        for(int i=0; i<get.length;i++){
+            result[i] = get[i].intValue();
+        }
+        return result;
     }
 }
